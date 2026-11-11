@@ -6,11 +6,15 @@ def load_mbpp():
     dataset = load_dataset("google-research-datasets/mbpp", "sanitized", split="test")
     tasks = []
     for row in dataset:
+        tests = row["test_list"]
+        if len(tests) < 2:
+            continue  # need at least one held-out test to score fairly
         tasks.append({
             "task_id": row["task_id"],
             "prompt": row["prompt"],
-            "code": row["code"],          # reference solution (never shown to the agent)
-            "tests": row["test_list"],    # list of assert statements
-            "imports": row["test_imports"],  # imports some tests need
+            "code": row["code"],            # reference solution (never shown to the agent)
+            "visible_test": tests[0],       # shown to the agent
+            "heldout_tests": tests[1:],     # only used for scoring
+            "imports": row["test_imports"], # imports some tests need
         })
     return tasks
