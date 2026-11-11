@@ -6,7 +6,7 @@ GPU=${GPU:-2}
 CUDA_VISIBLE_DEVICES=$GPU vllm serve "$MODEL_PATH" \
   --served-model-name Qwen/Qwen2.5-Coder-7B-Instruct \
   --generation-config vllm \
-  --gpu-memory-utilization 0.9 \
+  --gpu-memory-utilization ${MEM:-0.9} \
   --max-model-len 4096 \
   --max-num-seqs 32 \
   --port 8471
